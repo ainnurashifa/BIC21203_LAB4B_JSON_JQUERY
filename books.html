@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrieve and Display JSON Data</title>
+</head>
+<body>
+
+    <h1>Question 2 - Retrieve and Display JSON Data</h1>
+
+    <h2>Book Information</h2>
+
+    <div id="result">
+        <p>Loading book information...</p>
+    </div>
+
+    <script>
+        // Fetch data from books.json
+        fetch("books.json")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to load JSON data");
+                }
+
+                return response.json();
+            })
+
+            .then(data => {
+
+                // Select the result container
+                const result = document.getElementById("result");
+
+                // Clear the loading message
+                result.textContent = "";
+
+                // Display first book title
+                const firstBook = document.createElement("p");
+                firstBook.textContent = "First Book Title: " + data.books[0].title;
+                result.appendChild(firstBook);
+
+                // Display second book author
+                const secondBook = document.createElement("p");
+                secondBook.textContent = "Second Book Author: " + data.books[1].author;
+                result.appendChild(secondBook);
+
+                // Display genres of both books
+                const genreHeading = document.createElement("h3");
+                genreHeading.textContent = "Genres of Both Books";
+                result.appendChild(genreHeading);
+
+                // Loop through each book
+                data.books.forEach(book => {
+
+                    const bookTitle = document.createElement("h4");
+                    bookTitle.textContent = book.title;
+                    result.appendChild(bookTitle);
+
+                    const genreList = document.createElement("p");
+                    genreList.textContent = book.genres.join(", ");
+                    result.appendChild(genreList);
+
+                });
+
+            })
+
+            .catch(error => {
+
+                document.getElementById("result").textContent =
+                    "Error: Unable to load book information. Please try again.";
+
+                console.error(error);
+
+            });
+    </script>
+
+</body>
+</html>
